@@ -1,21 +1,23 @@
 {
-    "name": "crodas/languagedetector",
-    "description": "simple library to classify texts",
+    "name": "andywer/language-detector",
+    "description": "PHP library to detect the language of any free text.",
+    "version": "0.1.1",
     "authors": [
         {
             "name": "César D. Rodas",
             "email": "crodas@php.net"
+        },
+        {
+            "name": "Andy Wermke",
+            "homepage": "https://github.com/andywer"
         }
     ],
-    "require": {
-
-    },
+    "require": {},
     "minimum-stability": "dev",
     "require-dev": {
         "crodas/Autoloader": "~0.1"
     },
     "license": "BSD-4-Clause",
-    "version": "v0.1.1",
     "scripts": {
         "post-autoload-dump": "Autoloader\\Composer::generate"
     },
