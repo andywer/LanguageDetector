@@ -68,3 +68,13 @@ Algorithms
 The project is designed to work with modules, which means you can provide your own algorithm for `sorting` and `comparing` the N-Grams. By default the library implements the [PageRank](http://en.wikipedia.org/wiki/PageRank) as `sorting` algorithm, and *out of place* (described in the paper) as `comparing`. 
 
 In order to supply your own algorithms, you must change the `$config` at *learning stage* to load your own classes (which by the way should implement some interaces).
+
+Language Detection Training Files
+---------------------------------
+
+Have a look at `example/samples` directory. For more advanced traning data, visit the [Leipzig Corpora Download Page](http://corpora2.informatik.uni-leipzig.de/download.html).
+
+Languages with non-latin characters
+-----------------------------------
+
+Remember to set the Config's `mb` property (already before creating the language model) if you train for languages based on non-latin characters. Use UTF-8 encoded texts.
