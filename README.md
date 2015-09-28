@@ -1,9 +1,11 @@
-LanguageDetector [![Build Status](https://travis-ci.org/crodas/LanguageDetector.png)](https://travis-ci.org/crodas/LanguageDetector) [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=crodas&url=https://github.com/crodas/LanguageDetector&title=Language%20Detector%20Library&language=en&tags=github&category=software)
+LanguageDetector [![Build Status](https://travis-ci.org/crodas/LanguageDetector.png)](https://travis-ci.org/crodas/LanguageDetector)
 ================
 
-PHP Class to detect languages from any free text.
+PHP library to detect languages from any free text.
 
 It follows the approach described in the [paper](http://scholar.google.com.py/scholar?q=N-Gram-Based+Text+Categorization), a given text is tokenized into [N-Grams](http://en.wikipedia.org/wiki/N-gram) (we cleanup whitespaces before doing this step). Then we sort the `tokens` and we compare against a language `model`.
+
+*Fork of [crodas/languagedetector](https://github.com/crodas/LanguageDetector), since the original package seems abandoned.*
 
 How it works
 ------------
