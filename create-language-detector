@@ -26,20 +26,23 @@ if (count($samples) === 0 || isset($options['help']) || isset($options['?'])) {
     echo "Usage: ".$_SERVER['argv'][0]." <language sample files> [options]\n";
     echo "Options:\n";
     echo "    --output, -o <filename>    Sets the output script file path. Defaults to 'language.php'\n";
+    echo "    --mb                       Enables multibyte string functions (for non-latin characters)\n";
     echo "    --help, -?                 Print this help\n";
     exit;
 }
 
+
+// we load the configuration (which will be serialized
+// later into our language model file
+$config = new LanguageDetector\Config;
 
 $outputFile = 'language.php';
 
 if (isset($options['output']))  { $outputFile = $options['output']; }
 if (isset($options['o']))       { $outputFile = $options['o']; }
 
+if (isset($options['mb']))      { $config->useMb(true); }
 
-// we load the configuration (which will be serialized
-// later into our language model file
-$config = new LanguageDetector\Config;
 
 $c = new LanguageDetector\Learn($config);
 foreach ($samples as $sample) {
