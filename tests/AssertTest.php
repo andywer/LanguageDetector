@@ -1,6 +1,6 @@
 <?php
 
-class AssertTest extends \phpunit_framework_testcase
+class AssertTest extends \PHPUnit_Framework_TestCase
 {
     public static function langProvider()
     {
