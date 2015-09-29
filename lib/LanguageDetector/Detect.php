@@ -55,7 +55,12 @@ class Detect
         $this->sort     = $this->config->getSortObject();
         $this->distance = $this->config->GetDistanceObject();
     }
-    
+
+    /**
+     * @param string $datafile
+     * @return Detect
+     * @throws \Exception
+     */
     public static function initByPath($datafile)
     {
         $format = AbstractFormat::initFormatByPath($datafile);
@@ -68,22 +73,35 @@ class Detect
         return new self($data['config'], $data['data']);   
     }
 
+    /**
+     * @return array
+     */
     public function getKnowledge()
     {
         return $this->data;
     }
 
+    /**
+     * @return Config
+     */
     public function getConfig()
     {
         return $this->config;
     }
 
-    protected function detectChunk($text)
+    /**
+     * @param string $text
+     * @param string[] $languages
+     * @return array[] [ [ 'lang' => <string>, 'score' => <float> ], ... ]
+     */
+    protected function detectChunk($text, $languages = null)
     {
         $ngrams = $this->sort->sort($this->parser->get($text));
         $total  = min($this->config->maxNGram(), count($ngrams));
         
         foreach ($this->data as $lang => $data) {
+            if ($languages && !in_array($lang, $languages)) { continue; }
+
             $distance[] = array(
                 'lang'  => $lang,
                 'score' => $this->distance->distance($data, $ngrams, $total),
@@ -97,12 +115,22 @@ class Detect
         return $distance;
     }
 
+    /**
+     * @return string[]
+     */
     public function getLanguages()
     {
         return array_keys($this->data);
     }
-    
-    public function detectLanguageScores($text, $limit = 300)
+
+    /**
+     * @param string $text
+     * @param string[] $languages
+     * @param int $limit
+     * @return array[] [ [ 'lang' => <string>, 'score' => <float> ], ... ]
+     * @throws \Exception
+     */
+    public function detectScoresLimitedTo($text, $languages = null, $limit = 300)
     {
         $chunks = $this->parser->splitText($text, $limit);
         $results = array();
@@ -112,7 +140,7 @@ class Detect
         }
 
         foreach ($chunks as $i => $chunk) {
-            $result = $this->detectChunk($chunk);
+            $result = $this->detectChunk($chunk, $languages);
             $results[] = $result;
         }
 
@@ -141,6 +169,23 @@ class Detect
         return $distance;
     }
 
+    /**
+     * @param string $text
+     * @param int $limit
+     * @return array[] [ [ 'lang' => <string>, 'score' => <float> ], ... ]
+     * @throws \Exception
+     */
+    public function detectLanguageScores($text, $limit = 300)
+    {
+        return $this->detectScoresLimitedTo($text, null, $limit);
+    }
+
+    /**
+     * @param string $text
+     * @param int $limit
+     * @return array|string
+     * @throws \Exception
+     */
     public function detect($text, $limit = 300)
     {
         $distance = $this->detectLanguageScores($text, $limit);
