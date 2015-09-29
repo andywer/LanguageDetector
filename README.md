@@ -1,9 +1,11 @@
-LanguageDetector [![Build Status](https://travis-ci.org/crodas/LanguageDetector.png)](https://travis-ci.org/crodas/LanguageDetector) [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=crodas&url=https://github.com/crodas/LanguageDetector&title=Language%20Detector%20Library&language=en&tags=github&category=software)
+LanguageDetector [![Build Status](https://travis-ci.org/crodas/LanguageDetector.png)](https://travis-ci.org/crodas/LanguageDetector)
 ================
 
-PHP Class to detect languages from any free text.
+PHP library to detect languages from any free text.
 
 It follows the approach described in the [paper](http://scholar.google.com.py/scholar?q=N-Gram-Based+Text+Categorization), a given text is tokenized into [N-Grams](http://en.wikipedia.org/wiki/N-gram) (we cleanup whitespaces before doing this step). Then we sort the `tokens` and we compare against a language `model`.
+
+*Fork of [crodas/languagedetector](https://github.com/crodas/LanguageDetector), since the original package seems abandoned.*
 
 How it works
 ------------
@@ -68,3 +70,13 @@ Algorithms
 The project is designed to work with modules, which means you can provide your own algorithm for `sorting` and `comparing` the N-Grams. By default the library implements the [PageRank](http://en.wikipedia.org/wiki/PageRank) as `sorting` algorithm, and *out of place* (described in the paper) as `comparing`. 
 
 In order to supply your own algorithms, you must change the `$config` at *learning stage* to load your own classes (which by the way should implement some interaces).
+
+Language Detection Training Files
+---------------------------------
+
+Have a look at `example/samples` directory. For more advanced traning data, visit the [Leipzig Corpora Download Page](http://corpora2.informatik.uni-leipzig.de/download.html).
+
+Languages with non-latin characters
+-----------------------------------
+
+Remember to set the Config's `mb` property (already before creating the language model) if you train for languages based on non-latin characters. Use UTF-8 encoded texts.
