@@ -1,4 +1,4 @@
-LanguageDetector [![Build Status](https://travis-ci.org/crodas/LanguageDetector.png)](https://travis-ci.org/crodas/LanguageDetector)
+LanguageDetector [![Build Status](https://travis-ci.org/andywer/language-detector.png)](https://travis-ci.org/andywer/language-detector)
 ================
 
 PHP library to detect languages from any free text.
