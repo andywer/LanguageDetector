@@ -82,6 +82,7 @@ class Detect
     {
         $ngrams = $this->sort->sort($this->parser->get($text));
         $total  = min($this->config->maxNGram(), count($ngrams));
+        
         foreach ($this->data as $lang => $data) {
             $distance[] = array(
                 'lang'  => $lang,
@@ -93,15 +94,7 @@ class Detect
             return $a['score'] > $b['score'] ? -1 : 1;
         });
 
-        if ($distance[0]['score'] - $distance[1]['score'] <= $this->threshold) {
-            /** First and second language candidates are similar, we return the
-                whole structure */
-            return $distance;
-        }
-
-        /* we found a candidate which is at least 2% better than the second
-           candidate */
-        return $distance[0]['lang'];
+        return $distance;
     }
 
     public function getLanguages()
@@ -120,34 +113,16 @@ class Detect
 
         foreach ($chunks as $i => $chunk) {
             $result = $this->detectChunk($chunk);
-            if (is_string($result)) {
-                /* we successfully detected the chunk's language */
-                return $result;
-            }
             $results[] = $result;
         }
 
-        $candidates = array();
-        $distance   = array();
+        $distance = array();
         foreach ($results as $result) {
-            if (is_string($result)) {
-                $candidates[] = $result;
-                continue;
-            }
             foreach ($result as $data) {
                 if (empty($distance[ $data['lang'] ])) {
                     $distance[ $data['lang'] ] = array('lang' => $data['lang'], 'score' => 0);
                 }
                 $distance[ $data['lang'] ]['score'] += $data['score'];
-            }
-        }
-
-        if (count($candidates) > 0) {
-            $candidates = array_count_values($candidates);
-            arsort($candidates);
-            if (current($candidates) != array_sum(array_splice($candidates, 0, 2))/2) {
-                /* the first *is* more than the second */
-                return key($candidates);
             }
         }
 
@@ -162,19 +137,19 @@ class Detect
         usort($distance, function($a, $b) {
             return $a['score'] > $b['score'] ? -1 : 1;
         });
-        
+
         return $distance;
     }
 
     public function detect($text, $limit = 300)
     {
         $distance = $this->detectLanguageScores($text, $limit);
-
+        
         if ($distance[0]['score'] - $distance[1]['score'] <= $this->threshold) {
             /** We're not sure at all, we return the whole array then */
             return $distance;
         }
-        
+
         return $distance[0]['lang'];
     }
 }
